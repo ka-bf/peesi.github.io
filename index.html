@@ -1,342 +1,137 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>P.E.E.S.I</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>P.E.E.S.I</title>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #edeeef;
-        margin: 0;
-        padding: 0;
-        color: #333;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #edeeef;
+        }
 
-    header {
-        background: #6f889c;
-        padding: 15px;
-        text-align: center;
-        color: white;
-        font-size: 26px;
-        font-weight: bold;
-    }
+        header {
+            background: #6f8d3e;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+        }
 
-    .section {
-        width: 95%;
-        margin: 30px auto;
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 0 12px #0002;
-    }
+        .section {
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 12px;
+            display: flex;
+            gap: 25px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+        }
 
-    h2 {
-        margin-top: 0;
-        color: #6f8d3e;
-    }
+        .left {
+            width: 55%;
+        }
 
-    .container {
-        display: flex;
-        gap: 30px;
-    }
+        .right {
+            width: 45%;
+        }
 
-    /* ================== SIMULAÇÃO CASA + SOLAR ================== */
+        h2 {
+            color: #6f889c;
+            margin-top: 0;
+        }
 
-    .solar-sim {
-        width: 65%;
-        background: #d6e4f0;
-        padding: 20px;
-        border-radius: 12px;
-        position: relative;
-        height: 350px;
-    }
+   import { useState } from "react";
 
-    /* CENA */
-    .sky {
-        width: 100%;
-        height: 250px;
-        background: linear-gradient(#9fd3ff, #d6e4f0);
-        border-radius: 12px;
-        position: relative;
-    }
+export default function App() {
+  const [quizAnswer, setQuizAnswer] = useState(null);
+  const [switchOn, setSwitchOn] = useState(false);
 
-    /* ÍCONES DO CLIMA */
-    .weather {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        display: flex;
-        gap: 10px;
-    }
-    .weather div {
-        cursor: pointer;
-        font-size: 35px;
-        transition: transform .2s;
-    }
-    .weather div:hover {
-        transform: scale(1.2);
-    }
+  return (
+    <div className="min-h-screen bg-sky-100 p-6 flex flex-col items-center relative">
+      {/* Céu + Ícones do clima */}
+      <div className="w-full h-40 bg-sky-300 rounded-2xl shadow relative">
+        <div className="absolute top-4 right-4 flex gap-3 text-3xl">
+          <span>☀️</span>
+          <span>🌧️</span>
+          <span>⛅</span>
+        </div>
+      </div>
 
-    /* CASA CARTOON */
-    .house {
-        width: 150px;
-        height: 130px;
-        background: #ffe08c;
-        border: 3px solid #c2974b;
-        border-radius: 4px;
-        position: absolute;
-        bottom: 10px;
-        left: 40px;
-    }
-    .roof {
-        width: 0;
-        height: 0;
-        border-left: 85px solid transparent;
-        border-right: 85px solid transparent;
-        border-bottom: 70px solid #be4a39;
-        position: absolute;
-        top: -70px;
-        left: -10px;
-    }
-    .window {
-        width: 40px;
-        height: 40px;
-        background: #9ed0ff;
-        border: 3px solid #6fa9d1;
-        position: absolute;
-        left: 20px;
-        top: 40px;
-    }
+      {/* Título */}
+      <h1 className="text-3xl font-bold mt-6">Simulação + Quiz Básico</h1>
 
-    /* PLACA SOLAR */
-    .panel {
-        width: 100px;
-        height: 45px;
-        background: #446;
-        border: 3px solid #222;
-        position: absolute;
-        top: -20px;
-        left: 40px;
-        transform: skew(-20deg);
-        transition: box-shadow .3s, background .3s;
-    }
+      {/* Simulação do circuito (lâmpada simples) */}
+      <div className="mt-10 bg-white p-6 rounded-2xl shadow w-full max-w-xl">
+        <h2 className="text-xl font-semibold mb-4">Simulação: Circuito de Lâmpada</h2>
 
-    /* Indicador de energia */
-    .energy-bar {
-        width: 90%;
-        margin: 15px auto;
-        height: 20px;
-        background: #ccc;
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    .energy-fill {
-        height: 100%;
-        width: 0%;
-        background: #6f8d3e;
-        transition: width .4s;
-    }
+        <div className="flex items-center justify-between p-4 border rounded-xl">
+          {/* Chave */}
+          <button
+            onClick={() => setSwitchOn(!switchOn)}
+            className="px-4 py-2 rounded-xl border shadow hover:bg-gray-100"
+          >
+            {switchOn ? "Desligar" : "Ligar"}
+          </button>
 
-    /* ================== QUIZ ================== */
-
-    .quiz {
-        width: 35%;
-        background: #f5f5f5;
-        padding: 15px;
-        border-radius: 12px;
-        border: 2px solid #6f889c;
-    }
-    .quiz button {
-        background: #e6bf29;
-        padding: 10px;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        border-radius: 6px;
-        margin-top: 10px;
-        font-weight: bold;
-    }
-
-    /* ================== SIMULAÇÃO 2: CONSUMO ================== */
-
-    .usage-sim {
-        width: 65%;
-        background: #e4efd7;
-        padding: 20px;
-        border-radius: 12px;
-        position: relative;
-        height: 350px;
-    }
-
-    .mode-btn {
-        background: #6f889c;
-        color: white;
-        padding: 10px;
-        margin: 5px;
-        border-radius: 6px;
-        cursor: pointer;
-        display: inline-block;
-    }
-
-    .mode-btn:hover {
-        background: #566b7a;
-    }
-
-    .usage-indicator {
-        margin-top: 20px;
-        font-size: 22px;
-        font-weight: bold;
-    }
-</style>
-
-</head>
-<body>
-
-<header>
-    Plataforma de Educação Energética com Simulações Interativas
-</header>
-
-<!-- =======================================================
-                       SIMULAÇÃO SOLAR
-======================================================= -->
-
-<div class="section">
-    <h2>Simulação 1 — Efeito do Clima na Energia Solar</h2>
-
-    <div class="container">
-
-        <div class="solar-sim">
-
-            <div class="sky">
-
-                <div class="weather">
-                    <div onclick="setWeather('sun')">☀️</div>
-                    <div onclick="setWeather('cloud')">☁️</div>
-                    <div onclick="setWeather('rain')">🌧️</div>
-                    <div onclick="setWeather('night')">🌙</div>
-                </div>
-
-                <div class="house">
-                    <div class="roof"></div>
-                    <div class="panel" id="panel"></div>
-                    <div class="window"></div>
-                </div>
+          {/* Fio → Lâmpada */}
+          <div className="flex items-center gap-4">
+            <div className="h-1 w-16 bg-gray-600" />
+            <div className={`text-4xl ${switchOn ? "opacity-100" : "opacity-30"}`}>
+              💡
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="energy-bar">
-                <div class="energy-fill" id="energyFill"></div>
-            </div>
+      {/* Quiz */}
+      <div className="mt-10 bg-white p-6 rounded-2xl shadow w-full max-w-xl">
+        <h2 className="text-xl font-semibold mb-4">Quiz Rápido</h2>
 
+        <p className="mb-4">Qual componente controla o acionamento da lâmpada?</p>
+
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={() => setQuizAnswer("switch")}
+            className="px-4 py-2 border rounded-xl hover:bg-gray-100 text-left"
+          >
+            A) Chave
+          </button>
+
+          <button
+            onClick={() => setQuizAnswer("battery")}
+            className="px-4 py-2 border rounded-xl hover:bg-gray-100 text-left"
+          >
+            B) Bateria
+          </button>
+
+          <button
+            onClick={() => setQuizAnswer("lamp")}
+            className="px-4 py-2 border rounded-xl hover:bg-gray-100 text-left"
+          >
+            C) Lâmpada
+          </button>
         </div>
 
-        <div class="quiz">
-            <h3>Quiz</h3>
-
-            <p>1) Em qual condição há maior geração solar?</p>
-            <button onclick="alert('Correto! Dias ensolarados = maior geração.')">Sol</button>
-            <button onclick="alert('Nuvens reduzem, mas não zeram.')">Nublado</button>
-            <button onclick="alert('Chuva forte reduz bastante!')">Chuva</button>
-
-            <p>2) Energia solar funciona à noite?</p>
-            <button onclick="alert('Correto! À noite a geração é zero.')">Não</button>
-            <button onclick="alert('Errado.')">Sim</button>
-
-        </div>
-
+        {/* Resultado abaixo (sem popup) */}
+        {quizAnswer && (
+          <div className="mt-4 p-3 border-l-4 rounded bg-gray-50">
+            {quizAnswer === "switch" ? (
+              <p className="text-green-700 font-semibold">✔ A resposta correta é: Chave</p>
+            ) : (
+              <p className="text-red-700 font-semibold">✘ Resposta incorreta. A correta é "Chave".</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-</div>
-
-<!-- =======================================================
-                       SIMULAÇÃO CONSUMO
-======================================================= -->
-
-<div class="section">
-    <h2>Simulação 2 — Consumo Consciente de Energia</h2>
-
-    <div class="container">
-
-        <div class="usage-sim">
-
-            <div class="mode-btn" onclick="setMode(1)">Casa Gastona</div>
-            <div class="mode-btn" onclick="setMode(2)">Casa Equilibrada</div>
-            <div class="mode-btn" onclick="setMode(3)">Casa Eficiente</div>
-
-            <div id="usageText" class="usage-indicator"></div>
-
-        </div>
-
-        <div class="quiz">
-            <h3>Quiz</h3>
-
-            <p>Qual ação economiza mais energia?</p>
-            <button onclick="alert('Perfeito! Trocar lâmpadas faz enorme diferença.')">
-                Usar lâmpadas LED
-            </button>
-            <button onclick="alert('Isso ajuda, mas não tanto.')">
-                Abrir janelas com o ventilador ligado
-            </button>
-            <button onclick="alert('Errado: TV ligada sem uso gasta muito!')">
-                Deixar TV ligada
-            </button>
-
-        </div>
-
-    </div>
-</div>
-
-<!-- =======================================================
-                       SCRIPTS
-======================================================= -->
-
-<script>
-/* ---------------- SOLAR SIMULATION ---------------- */
-
-function setWeather(type) {
-    const panel = document.getElementById("panel");
-    const energy = document.getElementById("energyFill");
-
-    if (type === "sun") {
-        energy.style.width = "100%";
-        panel.style.background = "#88aaff";
-        panel.style.boxShadow = "0 0 15px gold";
-    }
-    if (type === "cloud") {
-        energy.style.width = "45%";
-        panel.style.background = "#556";
-        panel.style.boxShadow = "none";
-    }
-    if (type === "rain") {
-        energy.style.width = "20%";
-        panel.style.background = "#334";
-        panel.style.boxShadow = "none";
-    }
-    if (type === "night") {
-        energy.style.width = "0%";
-        panel.style.background = "#222";
-        panel.style.boxShadow = "none";
-    }
+  );
 }
 
-/* ---------------- ENERGY USAGE SIMULATION ---------------- */
-
-function setMode(n) {
-    const txt = document.getElementById("usageText");
-
-    if (n === 1) {
-        txt.innerHTML = "Casa Gastona 😵 — Consumo MUITO alto!";
-        txt.style.color = "#c0392b";
-    }
-    if (n === 2) {
-        txt.innerHTML = "Casa Equilibrada 🙂 — Consumo moderado.";
-        txt.style.color = "#f1c40f";
-    }
-    if (n === 3) {
-        txt.innerHTML = "Casa Eficiente 😎 — Consumo baixo!";
-        txt.style.color = "#27ae60";
-    }
-}
 </script>
 
 </body>
