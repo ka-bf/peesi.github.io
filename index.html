@@ -9,129 +9,186 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background: #edeeef;
+            color: #333;
         }
 
         header {
             background: #6f8d3e;
-            padding: 20px;
+            padding: 25px;
             color: white;
             text-align: center;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: bold;
         }
 
-        .section {
+        section {
+            padding: 60px 20px;
+            margin: 40px auto;
+            max-width: 1000px;
             background: white;
-            width: 90%;
-            max-width: 1200px;
-            margin: 25px auto;
-            padding: 25px;
-            border-radius: 12px;
-            display: flex;
-            gap: 25px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-        }
-
-        .left {
-            width: 55%;
-        }
-
-        .right {
-            width: 45%;
+            border-radius: 16px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
         }
 
         h2 {
-            color: #6f889c;
             margin-top: 0;
+            color: #6f889c;
         }
 
-   import { useState } from "react";
+        /* --- CASA E CLIMA --- */
+        .casa-container {
+            text-align: center;
+            position: relative;
+        }
 
-export default function App() {
-  const [quizAnswer, setQuizAnswer] = useState(null);
-  const [switchOn, setSwitchOn] = useState(false);
+        .icone-clima {
+            font-size: 46px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
 
-  return (
-    <div className="min-h-screen bg-sky-100 p-6 flex flex-col items-center relative">
-      {/* Céu + Ícones do clima */}
-      <div className="w-full h-40 bg-sky-300 rounded-2xl shadow relative">
-        <div className="absolute top-4 right-4 flex gap-3 text-3xl">
-          <span>☀️</span>
-          <span>🌧️</span>
-          <span>⛅</span>
+        .casa {
+            font-size: 130px;
+            margin-top: 40px;
+        }
+
+        .botoes-clima button {
+            margin: 10px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #6f889c;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- SIMULAÇÃO CIRCUITO --- */
+        .circuito-box {
+            padding: 25px;
+            border: 2px solid #6f889c;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .lampada {
+            font-size: 70px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .botao-sim {
+            padding: 10px 18px;
+            margin-top: 20px;
+            background: #6f8d3e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* --- QUIZ --- */
+        .quiz button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #6f889c;
+            background: #f8f8f8;
+            cursor: pointer;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 12px;
+            border-left: 5px solid #6f8d3e;
+            background: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>Plataforma de Educação Energética com Simulações Interativas</header>
+
+<!-- SEÇÃO 1 — CASA E CLIMA -->
+<section>
+    <h2>Clima & Energia Solar</h2>
+
+    <div class="casa-container">
+        <div id="iconeClima" class="icone-clima">☀️</div>
+        <div class="casa">🏠</div>
+
+        <div class="botoes-clima">
+            <button onclick="mudarClima('sol')">☀️ Ensolarado</button>
+            <button onclick="mudarClima('nublado')">⛅ Nublado</button>
+            <button onclick="mudarClima('noite')">🌙 Noite</button>
         </div>
-      </div>
-
-      {/* Título */}
-      <h1 className="text-3xl font-bold mt-6">Simulação + Quiz Básico</h1>
-
-      {/* Simulação do circuito (lâmpada simples) */}
-      <div className="mt-10 bg-white p-6 rounded-2xl shadow w-full max-w-xl">
-        <h2 className="text-xl font-semibold mb-4">Simulação: Circuito de Lâmpada</h2>
-
-        <div className="flex items-center justify-between p-4 border rounded-xl">
-          {/* Chave */}
-          <button
-            onClick={() => setSwitchOn(!switchOn)}
-            className="px-4 py-2 rounded-xl border shadow hover:bg-gray-100"
-          >
-            {switchOn ? "Desligar" : "Ligar"}
-          </button>
-
-          {/* Fio → Lâmpada */}
-          <div className="flex items-center gap-4">
-            <div className="h-1 w-16 bg-gray-600" />
-            <div className={`text-4xl ${switchOn ? "opacity-100" : "opacity-30"}`}>
-              💡
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Quiz */}
-      <div className="mt-10 bg-white p-6 rounded-2xl shadow w-full max-w-xl">
-        <h2 className="text-xl font-semibold mb-4">Quiz Rápido</h2>
-
-        <p className="mb-4">Qual componente controla o acionamento da lâmpada?</p>
-
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={() => setQuizAnswer("switch")}
-            className="px-4 py-2 border rounded-xl hover:bg-gray-100 text-left"
-          >
-            A) Chave
-          </button>
-
-          <button
-            onClick={() => setQuizAnswer("battery")}
-            className="px-4 py-2 border rounded-xl hover:bg-gray-100 text-left"
-          >
-            B) Bateria
-          </button>
-
-          <button
-            onClick={() => setQuizAnswer("lamp")}
-            className="px-4 py-2 border rounded-xl hover:bg-gray-100 text-left"
-          >
-            C) Lâmpada
-          </button>
-        </div>
-
-        {/* Resultado abaixo (sem popup) */}
-        {quizAnswer && (
-          <div className="mt-4 p-3 border-l-4 rounded bg-gray-50">
-            {quizAnswer === "switch" ? (
-              <p className="text-green-700 font-semibold">✔ A resposta correta é: Chave</p>
-            ) : (
-              <p className="text-red-700 font-semibold">✘ Resposta incorreta. A correta é "Chave".</p>
-            )}
-          </div>
-        )}
-      </div>
     </div>
-  );
+</section>
+
+<!-- SEÇÃO 2 — SIMULAÇÃO CIRCUITO -->
+<section>
+    <h2>Simulação de Circuito Elétrico</h2>
+
+    <div class="circuito-box">
+        <p>Ative a chave para acender a lâmpada!</p>
+
+        <button class="botao-sim" onclick="toggleLampada()">
+            Ligar / Desligar
+        </button>
+
+        <div id="lampada" class="lampada" style="opacity:0.3;">💡</div>
+    </div>
+</section>
+
+<!-- SEÇÃO 3 — QUIZ -->
+<section>
+    <h2>Quiz: Conceitos Básicos</h2>
+
+    <p>Qual componente controla o acionamento da lâmpada?</p>
+
+    <div class="quiz">
+        <button onclick="responder('A')">A) Chave</button>
+        <button onclick="responder('B')">B) Bateria</button>
+        <button onclick="responder('C')">C) Lâmpada</button>
+    </div>
+
+    <div id="resultadoQuiz"></div>
+</section>
+
+<script>
+/* --- CLIMA --- */
+function mudarClima(tipo) {
+    const icone = document.getElementById('iconeClima');
+
+    if (tipo === 'sol') icone.textContent = "☀️";
+    if (tipo === 'nublado') icone.textContent = "⛅";
+    if (tipo === 'noite') icone.textContent = "🌙";
 }
 
+/* --- LÂMPADA --- */
+let ligada = false;
+
+function toggleLampada() {
+    ligada = !ligada;
+    document.getElementById("lampada").style.opacity = ligada ? "1" : "0.3";
+}
+
+/* --- QUIZ --- */
+function responder(opcao) {
+    const box = document.getElementById("resultadoQuiz");
+
+    if (opcao === 'A') {
+        box.innerHTML =
+            "<div class='resultado'><strong>✔ Correto!</strong> A chave controla o acionamento.</div>";
+    } else {
+        box.innerHTML =
+            "<div class='resultado'><strong>✘ Resposta incorreta.</strong> A correta é A) Chave.</div>";
+    }
+}
 </script>
 
 </body>
