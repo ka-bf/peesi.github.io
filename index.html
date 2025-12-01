@@ -1,116 +1,206 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
     <title>P.E.E.S.I</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+            background: #edeeef;
             color: #333;
-            text-align: center;
         }
+
         header {
-            padding: 20px;
-            background: #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: #6f8d3e;
+            padding: 35px 20px;
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
         }
-        h1 { margin: 0; font-size: 26px; }
-        p { max-width: 600px; margin: 10px auto; }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .intro {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .botoes {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
         .btn {
-            display: inline-block;
-            margin: 10px;
-            padding: 12px 22px;
-            background: #a8c5ff;
-            border-radius: 8px;
+            padding: 15px 35px;
+            font-size: 18px;
+            background: white;
+            color: #6f889c;
+            border: 2px solid #6f889c;
+            border-radius: 12px;
+            cursor: pointer;
             text-decoration: none;
-            color: #000;
+            transition: 0.25s;
         }
-        #quiz {
+
+        .btn:hover {
+            background: #6f889c;
+            color: white;
+        }
+
+        /* QUIZ PAGE STYLE */
+        #quizContainer {
             display: none;
-            margin-top: 30px;
+            margin-top: 40px;
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
         }
-        .question {
-            background: #fff;
-            margin: 20px auto;
-            padding: 20px;
-            width: 80%;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+        .quiz-question {
+            margin-bottom: 18px;
+            font-weight: bold;
+            color: #6f889c;
         }
-        button {
-            margin-top: 10px;
+
+        .quiz-option {
+            display: block;
+            text-align: left;
             padding: 10px;
-            border: none;
-            background: #bcd2ff;
-            border-radius: 6px;
+            margin: 8px 0;
+            background: #f7f7f7;
+            border: 2px solid #6f889c;
+            border-radius: 10px;
+            cursor: pointer;
         }
-        #result { margin-top: 20px; font-size: 20px; font-weight: bold; }
-        #retry, #home { display:none; margin:10px; }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 12px;
+            border-left: 5px solid #6f8d3e;
+            background: #f0f0f0;
+        }
     </style>
 </head>
+
 <body>
-    <header>
-        <h1>Plataforma de Educação Energética com Simulações Interativas</h1>
-    </header>
 
-    <p>Bem-vindo! Escolha abaixo entre jogar uma simulação em Unity ou testar seus conhecimentos no quiz sobre energia.</p>
+<header>
+    Plataforma de Educação Energética com Simulações Interativas
+</header>
 
-    <a class="btn" onclick="openUnity()">Jogar Simulação</a>
-    <a class="btn" onclick="startQuiz()">Fazer Quiz</a>
+<div class="container">
 
-    <div id="quiz"></div>
-    <div id="result"></div>
-    <button id="retry" onclick="startQuiz()">Tentar Novamente</button>
-    <button id="home" onclick="goHome()">Voltar ao Início</button>
+    <p class="intro">
+        Bem-vindo(a) à P.E.E.S.I! Explore conteúdos energéticos de forma interativa:  
+        escolha entre jogar uma simulação ou testar seus conhecimentos no quiz.
+    </p>
+
+    <div class="botoes">
+        <!-- Troque o link depois para o seu jogo Unity -->
+        <a class="btn" href="SEU-LINK-DO-UNITY-AQUI">🎮 Jogar Simulação</a>
+
+        <button class="btn" onclick="abrirQuiz()">📝 Fazer Quiz</button>
+    </div>
+
+    
+    <!-- QUIZ -->
+    <div id="quizContainer">
+        <h2 style="color:#6f889c;">Quiz de 6 Perguntas</h2>
+
+        <div id="quizContent"></div>
+        <div id="resultadoFinal"></div>
+    </div>
+
+</div>
 
 <script>
-const questions = [
-    {q:"Em uma residência, vários aparelhos permanecem ligados...", options:["A) aparelhos desligados reduzem...","B) alguns dispositivos continuam consumindo energia em stand-by.","C) a energia armazenada...","D) a rede precisa compensar..."], answer:1},
-    {q:"Substituir lâmpadas fluorescentes por LED...", options:["A) LEDs consomem mais...","B) LEDs têm maior vida útil e menor consumo.","C) LEDs funcionam apenas...","D) LEDs transformam mais..."], answer:1},
-    {q:"Uma medida que contribui para economia é:", options:["A) abrir geladeira...","B) manter filtros e equipamentos limpos.","C) usar ar-condicionado turbo...","D) manter lâmpadas acesas..."], answer:1},
-    {q:"A energia solar é renovável porque:", options:["A) depende de combustíveis...","B) produz resíduos...","C) utiliza fonte inesgotável.","D) possui alto impacto..."], answer:2},
-    {q:"As bandeiras tarifárias foram criadas para:", options:["A) aumentar arrecadação...","B) informar consumidor...","C) substituir cálculo...","D) eliminar variação..."], answer:1},
-    {q:"Uma atitude simples que reduz consumo é:", options:["A) aumentar temp. do chuveiro...","B) deixar aparelhos carregando...","C) substituir aparelhos por Selo A.","D) usar extensões..."], answer:2}
+/* QUIZ LOGIC */
+const perguntas = [
+    {
+        pergunta: "1) Em uma residência, vários aparelhos permanecem ligados na tomada mesmo quando não estão em uso. Esse hábito contribui para o aumento da conta de energia porque:",
+        opcoes: ["A) alguns dispositivos continuam consumindo energia em modo stand-by.", "B) aparelhos desligados reduzem a eficiência da rede elétrica.", "C) a rede precisa compensar a tensão perdida pelo desuso."],
+        correta: 0
+    },
+    {
+        pergunta: "2) Substituir lâmpadas fluorescentes por lâmpadas LED é uma prática recomendada porque:",
+        opcoes: ["A) LEDs consomem mais energia, mas iluminam melhor.", "B) LEDs têm maior vida útil e menor consumo energético.", "C) LEDs transformam mais energia em calor que luz."],
+        correta: 1
+    },
+    {
+        pergunta: "3) O que ajuda a economizar energia?",
+        opcoes: ["A) Apagar luzes quando possível", "B) Abrir a geladeira várias vezes ao dia para estabilizar a temperatura interna.", "C) Utilizar o ar-condicionado no modo 'turbo' para resfriar o ambiente mais rápido."],
+        correta: 0
+    },
+    {
+        pergunta: "4) A energia solar é considerada uma fonte renovável porque:",
+        opcoes: ["A) possui alto impacto ambiental comparado a outras fontes.", "B) produz resíduos tóxicos durante sua geração", "C) utiliza uma fonte natural inesgotável a longo prazo."],
+        correta: 2
+    },
+    {
+        pergunta: "5) Em uma residência, uma pessoa recebe um choque ao tocar um eletrodoméstico metálico. Considerando os princípios da segurança elétrica, por que essa situação ocorre?",
+        opcoes: ["A) Apagar luzes quando possível", "B) Abrir a geladeira várias vezes ao dia para estabilizar a temperatura interna.", "C) Utilizar o ar-condicionado no modo 'turbo' para resfriar o ambiente mais rápido."],
+        correta: 0
+    },
+    {
+        pergunta: "6) Em uma residência, vários equipamentos de alta potência são conectados na mesma extensão elétrica.Do ponto de vista elétrico, essa situação representa risco porque:",
+        opcoes: ["A) Porque o metal esquenta e libera eletricidade quando o aparelho está ligado.", "B) Porque o corpo humano sempre conduz energia quando encosta em qualquer aparelho.", "C) Porque a carcaça metálica pode estar energizada devido a falha no aterramento ou isolamento."],
+        correta: 2
+    },
 ];
 
-function goHome(){ location.reload(); }
-function openUnity(){ alert("Link da simulação Unity aqui"); }
+let index = 0;
+let acertos = 0;
 
-function startQuiz(){
-    document.getElementById('quiz').innerHTML = '';
-    document.getElementById('result').innerHTML = '';
-    document.getElementById('retry').style.display = 'none';
-    document.getElementById('home').style.display = 'none';
+function abrirQuiz() {
+    document.getElementById("quizContainer").style.display = "block";
+    mostrarPergunta();
+}
 
-    let score = 0;
-    let index = 0;
+function mostrarPergunta() {
+    const q = perguntas[index];
+    const box = document.getElementById("quizContent");
 
-    function showQuestion(){
-        if(index >= questions.length){
-            document.getElementById('quiz').innerHTML = '';
-            document.getElementById('result').innerHTML = `Você acertou ${score} de ${questions.length}!`;
-            document.getElementById('retry').style.display = 'inline-block';
-            document.getElementById('home').style.display = 'inline-block';
-            return;
-        }
+    box.innerHTML = `
+        <p class="quiz-question">${q.pergunta}</p>
+        ${q.opcoes.map((op, i) =>
+            `<div class="quiz-option" onclick="responder(${i})">${op}</div>`
+        ).join("")}
+    `;
+}
 
-        const q = questions[index];
-        let html = `<div class='question'><h3>Questão ${index+1}</h3><p>${q.q}</p>`;
-        for(let i=0;i<q.options.length;i++){
-            html += `<button onclick='answer(${i})'>${q.options[i]}</button><br>`;
-        }
-        html += `</div>`;
-        document.getElementById('quiz').innerHTML = html;
+function responder(resposta) {
+    if (resposta === perguntas[index].correta) acertos++;
+
+    index++;
+
+    if (index < perguntas.length) {
+        mostrarPergunta();
+    } else {
+        finalizarQuiz();
     }
+}
 
-    window.answer = function(i){ if(i===questions[index].answer) score++; index++; showQuestion(); }
-
-    showQuestion();
+function finalizarQuiz() {
+    document.getElementById("quizContent").innerHTML = "";
+    document.getElementById("resultadoFinal").innerHTML = `
+        <div class="resultado">
+            Você acertou <strong>${acertos}</strong> de <strong>${perguntas.length}</strong> perguntas! 🎉
+        </div>
+    `;
 }
 </script>
+
 </body>
 </html>
