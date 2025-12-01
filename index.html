@@ -14,89 +14,74 @@
 
         header {
             background: #6f8d3e;
-            padding: 25px;
-            color: white;
+            padding: 35px 20px;
             text-align: center;
+            color: white;
             font-size: 28px;
             font-weight: bold;
         }
 
-        section {
-            padding: 60px 20px;
-            margin: 40px auto;
-            max-width: 1000px;
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .intro {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .botoes {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            font-size: 18px;
             background: white;
-            border-radius: 16px;
+            color: #6f889c;
+            border: 2px solid #6f889c;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.25s;
+        }
+
+        .btn:hover {
+            background: #6f889c;
+            color: white;
+        }
+
+        /* QUIZ PAGE STYLE */
+        #quizContainer {
+            display: none;
+            margin-top: 40px;
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
             box-shadow: 0 4px 14px rgba(0,0,0,0.12);
         }
 
-        h2 {
-            margin-top: 0;
+        .quiz-question {
+            margin-bottom: 18px;
+            font-weight: bold;
             color: #6f889c;
         }
 
-        /* --- CASA E CLIMA --- */
-        .casa-container {
-            text-align: center;
-            position: relative;
-        }
-
-        .icone-clima {
-            font-size: 46px;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-        }
-
-        .casa {
-            font-size: 130px;
-            margin-top: 40px;
-        }
-
-        .botoes-clima button {
-            margin: 10px;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 10px;
-            background: #6f889c;
-            color: white;
-            cursor: pointer;
-        }
-
-        /* --- SIMULAÇÃO CIRCUITO --- */
-        .circuito-box {
-            padding: 25px;
-            border: 2px solid #6f889c;
-            border-radius: 14px;
-            text-align: center;
-        }
-
-        .lampada {
-            font-size: 70px;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-
-        .botao-sim {
-            padding: 10px 18px;
-            margin-top: 20px;
-            background: #6f8d3e;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        /* --- QUIZ --- */
-        .quiz button {
+        .quiz-option {
             display: block;
-            width: 100%;
             text-align: left;
+            padding: 10px;
             margin: 8px 0;
-            padding: 12px;
-            border-radius: 10px;
+            background: #f7f7f7;
             border: 2px solid #6f889c;
-            background: #f8f8f8;
+            border-radius: 10px;
             cursor: pointer;
         }
 
@@ -104,90 +89,106 @@
             margin-top: 20px;
             padding: 12px;
             border-left: 5px solid #6f8d3e;
-            background: #f4f4f4;
+            background: #f0f0f0;
         }
     </style>
 </head>
 
 <body>
 
-<header>Plataforma de Educação Energética com Simulações Interativas</header>
+<header>
+    Plataforma de Educação Energética com Simulações Interativas
+</header>
 
-<!-- SEÇÃO 1 — CASA E CLIMA -->
-<section>
-    <h2>Clima & Energia Solar</h2>
+<div class="container">
 
-    <div class="casa-container">
-        <div id="iconeClima" class="icone-clima">☀️</div>
-        <div class="casa">🏠</div>
+    <p class="intro">
+        Bem-vindo(a) à P.E.E.S.I! Explore conteúdos energéticos de forma interativa:  
+        escolha entre jogar uma simulação feita no Unity ou testar seus conhecimentos no quiz básico.
+    </p>
 
-        <div class="botoes-clima">
-            <button onclick="mudarClima('sol')">☀️ Ensolarado</button>
-            <button onclick="mudarClima('nublado')">⛅ Nublado</button>
-            <button onclick="mudarClima('noite')">🌙 Noite</button>
-        </div>
-    </div>
-</section>
+    <div class="botoes">
+        <!-- Troque o link depois para o seu jogo Unity -->
+        <a class="btn" href="SEU-LINK-DO-UNITY-AQUI">🎮 Jogar (Unity)</a>
 
-<!-- SEÇÃO 2 — SIMULAÇÃO CIRCUITO -->
-<section>
-    <h2>Simulação de Circuito Elétrico</h2>
-
-    <div class="circuito-box">
-        <p>Ative a chave para acender a lâmpada!</p>
-
-        <button class="botao-sim" onclick="toggleLampada()">
-            Ligar / Desligar
-        </button>
-
-        <div id="lampada" class="lampada" style="opacity:0.3;">💡</div>
-    </div>
-</section>
-
-<!-- SEÇÃO 3 — QUIZ -->
-<section>
-    <h2>Quiz: Conceitos Básicos</h2>
-
-    <p>Qual componente controla o acionamento da lâmpada?</p>
-
-    <div class="quiz">
-        <button onclick="responder('A')">A) Chave</button>
-        <button onclick="responder('B')">B) Bateria</button>
-        <button onclick="responder('C')">C) Lâmpada</button>
+        <button class="btn" onclick="abrirQuiz()">📝 Fazer Quiz</button>
     </div>
 
-    <div id="resultadoQuiz"></div>
-</section>
+    
+    <!-- QUIZ -->
+    <div id="quizContainer">
+        <h2 style="color:#6f889c;">Quiz de 4 Perguntas</h2>
+
+        <div id="quizContent"></div>
+        <div id="resultadoFinal"></div>
+    </div>
+
+</div>
 
 <script>
-/* --- CLIMA --- */
-function mudarClima(tipo) {
-    const icone = document.getElementById('iconeClima');
+/* QUIZ LOGIC */
+const perguntas = [
+    {
+        pergunta: "1) O que é energia elétrica?",
+        opcoes: ["A) Movimento de elétrons", "B) Movimento de prótons", "C) Luz solar concentrada"],
+        correta: 0
+    },
+    {
+        pergunta: "2) Qual item consome mais energia?",
+        opcoes: ["A) Ventilador", "B) Secador de cabelo", "C) Carregador de celular"],
+        correta: 1
+    },
+    {
+        pergunta: "3) O que ajuda a economizar energia?",
+        opcoes: ["A) Apagar luzes quando possível", "B) Deixar a TV ligada", "C) Usar aparelhos velhos e ineficientes"],
+        correta: 0
+    },
+    {
+        pergunta: "4) Energia solar funciona melhor em qual situação?",
+        opcoes: ["A) Dia ensolarado", "B) Noite", "C) Tempestade forte"],
+        correta: 0
+    },
+];
 
-    if (tipo === 'sol') icone.textContent = "☀️";
-    if (tipo === 'nublado') icone.textContent = "⛅";
-    if (tipo === 'noite') icone.textContent = "🌙";
+let index = 0;
+let acertos = 0;
+
+function abrirQuiz() {
+    document.getElementById("quizContainer").style.display = "block";
+    mostrarPergunta();
 }
 
-/* --- LÂMPADA --- */
-let ligada = false;
+function mostrarPergunta() {
+    const q = perguntas[index];
+    const box = document.getElementById("quizContent");
 
-function toggleLampada() {
-    ligada = !ligada;
-    document.getElementById("lampada").style.opacity = ligada ? "1" : "0.3";
+    box.innerHTML = `
+        <p class="quiz-question">${q.pergunta}</p>
+        ${q.opcoes.map((op, i) =>
+            `<div class="quiz-option" onclick="responder(${i})">${op}</div>`
+        ).join("")}
+    `;
 }
 
-/* --- QUIZ --- */
-function responder(opcao) {
-    const box = document.getElementById("resultadoQuiz");
+function responder(resposta) {
+    if (resposta === perguntas[index].correta) acertos++;
 
-    if (opcao === 'A') {
-        box.innerHTML =
-            "<div class='resultado'><strong>✔ Correto!</strong> A chave controla o acionamento.</div>";
+    index++;
+
+    if (index < perguntas.length) {
+        mostrarPergunta();
     } else {
-        box.innerHTML =
-            "<div class='resultado'><strong>✘ Resposta incorreta.</strong> A correta é A) Chave.</div>";
+        finalizarQuiz();
     }
+}
+
+function finalizarQuiz() {
+    document.getElementById("quizContent").innerHTML = "";
+    document.getElementById("resultadoFinal").innerHTML = `
+        <div class="resultado">
+            Você acertou <strong>${acertos}</strong> de <strong>${perguntas.length}</strong> perguntas! 🎉
+        </div>
+    `;
 }
 </script>
 
